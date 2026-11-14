@@ -453,6 +453,8 @@ const topics = () => {
 };
 const topicById = id => topics().find(t=>t.id===id);
 const byName = (a,b) => (a.name||"").localeCompare(b.name||"", undefined, {sensitivity:"base", numeric:true});
+const isCatchAll = t => t.id==="specialties" || /^special/i.test(t.name||"");
+const byName = (a,b) => (isCatchAll(a)-isCatchAll(b)) || (a.name||"").localeCompare(b.name||"", undefined, {sensitivity:"base", numeric:true});
 const childrenOf = id => topics().filter(t=>t.parent===id).sort(byName);
 const roots = () => topics().filter(t=>!t.parent || !topicById(t.parent)).sort(byName);
 const fullName = t => { const p = t && t.parent && topicById(t.parent); return p ? p.name+" › "+t.name : (t?t.name:""); };
